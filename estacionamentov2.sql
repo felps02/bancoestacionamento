@@ -2,24 +2,40 @@ DROP DATABASE IF EXISTS estacionamento_app;
 CREATE DATABASE estacionamento_app;
 USE estacionamento_app;
 
--- =========================
+
+-- TABELA LOCALIZACAO
+CREATE TABLE estado (
+    id_estado INT AUTO_INCREMENT PRIMARY KEY,
+    estado VARCHAR(255) NOT NULL
+  
+);
+CREATE TABLE localizacao (
+    id_localizacao INT AUTO_INCREMENT PRIMARY KEY,
+    endereco VARCHAR(255) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    id_estado int not null,
+      FOREIGN KEY (id_estado) REFERENCES estado(id_estado)
+);
+-- TABELA estado
+
 -- TABELA ESTACIONAMENTO
--- =========================
+
 CREATE TABLE estacionamento (
     id_estacionamento INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
-    endereco VARCHAR(255) NOT NULL,
-    cidade VARCHAR(100) NOT NULL,
-    estado VARCHAR(50) NOT NULL,
     telefone VARCHAR(20),
     capacidade_total INT NOT NULL,
     ativo BOOLEAN DEFAULT TRUE,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_localizacao INT NOT NULL,
+
+    FOREIGN KEY (id_localizacao) REFERENCES localizacao(id_localizacao)
+      
 );
 
--- =========================
+
 -- TABELA USUARIO
--- =========================
+
 CREATE TABLE usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -28,22 +44,23 @@ CREATE TABLE usuario (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- =========================
+
 -- TABELA VEICULO
--- =========================
+
 CREATE TABLE veiculo (
     id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
-    placa VARCHAR(10) NOT NULL UNIQUE,
+    placa VARCHAR(8) NOT NULL UNIQUE,
     modelo VARCHAR(100),
     cor VARCHAR(50),
     id_usuario INT NOT NULL,
+
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-        ON DELETE CASCADE
+        
 );
 
--- =========================
+
 -- TABELA VAGA
--- =========================
+
 CREATE TABLE vaga (
     id_vaga INT AUTO_INCREMENT PRIMARY KEY,
     numero VARCHAR(10) NOT NULL,
@@ -57,9 +74,8 @@ CREATE TABLE vaga (
     UNIQUE(numero, id_estacionamento)
 );
 
--- =========================
 -- TABELA MOVIMENTACAO
--- =========================
+
 CREATE TABLE movimentacao (
     id_movimentacao INT AUTO_INCREMENT PRIMARY KEY,
     id_veiculo INT NOT NULL,
@@ -79,20 +95,19 @@ CREATE TABLE movimentacao (
         ON DELETE CASCADE
 );
 
--- =========================
 -- TABELA FEEDBACK
--- =========================
+
 CREATE TABLE feedback (
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_estacionamento INT NOT NULL,
-    nota INT NOT NULL CHECK (nota BETWEEN 1 AND 5),
+    nota TINYINT NOT NULL,
     comentario TEXT,
     data_feedback TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-        ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+        
 
     FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id_estacionamento)
-        ON DELETE CASCADE
+       
 );
