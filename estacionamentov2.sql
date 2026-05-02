@@ -16,7 +16,6 @@ CREATE TABLE estado (
 );
 CREATE TABLE localizacao (
     id_localizacao INT AUTO_INCREMENT PRIMARY KEY,
-    endereco VARCHAR(255) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
     id_estado int not null,
       FOREIGN KEY (id_estado) REFERENCES estado(id_estado)
