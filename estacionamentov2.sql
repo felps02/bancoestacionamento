@@ -2,12 +2,12 @@ DROP DATABASE IF EXISTS estacionamento_app;
 CREATE DATABASE estacionamento_app;
 USE estacionamento_app;
 
--- TABELA LOCALIZACAO
+-- TABELA  idade
 CREATE TABLE cidade (
     id_cidade INT AUTO_INCREMENT PRIMARY KEY,
     cidade VARCHAR(255) NOT NULL
 );
--- TABELA LOCALIZACAO
+-- TABELA estado
 CREATE TABLE estado (
     id_estado INT AUTO_INCREMENT PRIMARY KEY,
     estado VARCHAR(255) NOT NULL,
@@ -15,8 +15,10 @@ CREATE TABLE estado (
   FOREIGN KEY (id_cidade) REFERENCES cidade(id_cidade)
 );
 CREATE TABLE localizacao (
-    id_localizacao INT AUTO_INCREMENT PRIMARY KEY,
-    id_estado int not null,
+   	id_localizacao INT AUTO_INCREMENT PRIMARY KEY,
+	rua VARCHAR(255) NOT NULL,
+	cep VARCHAR(9),
+    	id_estado int not null,
       FOREIGN KEY (id_estado) REFERENCES estado(id_estado)
 );
 -- TABELA estado
